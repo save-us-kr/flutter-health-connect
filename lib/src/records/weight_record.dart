@@ -49,11 +49,11 @@ class WeightRecord extends InstantaneousRecord {
 
   @override
   factory WeightRecord.fromMap(Map<String, dynamic> map) {
+    final hour = int.tryParse(map['zoneOffset'] as String);
+
     return WeightRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: hour != null ? Duration(hours: hour) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       weight: Mass.fromMap(Map<String, dynamic>.from(map['weight'])),
     );
