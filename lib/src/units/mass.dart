@@ -1,3 +1,5 @@
+import 'package:flutter_health_connect/src/units.dart';
+
 class Mass implements Comparable<Mass> {
   final double value;
   final MassUnit type;
@@ -53,8 +55,9 @@ class Mass implements Comparable<Mass> {
   @override
   String toString() => '$value ${type.name.toLowerCase()}';
 
-  factory Mass.fromMap(Map<String, dynamic> map) =>
-      Mass.grams(map['grams'] as double);
+  factory Mass.fromMap(Map<String, dynamic> map) {
+    return Mass.grams(map['grams'] as double);
+  }
 }
 
 enum MassUnit {
