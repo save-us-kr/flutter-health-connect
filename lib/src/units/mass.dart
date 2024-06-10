@@ -1,5 +1,3 @@
-import 'package:flutter_health_connect/src/units.dart';
-
 class Mass implements Comparable<Mass> {
   final double value;
   final MassUnit type;

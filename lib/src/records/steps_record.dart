@@ -64,15 +64,14 @@ class StepsRecord extends IntervalRecord {
 
   @override
   factory StepsRecord.fromMap(Map<String, dynamic> map) {
+    final startHour = int.tryParse(map['startZoneOffset'] as String);
+    final endHour = int.tryParse(map['endZoneOffset'] as String);
+
     return StepsRecord(
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
+      startZoneOffset: startHour != null ? Duration(hours: startHour) : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: endHour != null ? Duration(hours: endHour) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       count: map['count'] as int,
     );
