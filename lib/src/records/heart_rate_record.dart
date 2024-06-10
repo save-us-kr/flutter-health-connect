@@ -60,19 +60,18 @@ class HeartRateRecord extends SeriesRecord<HeartRateSample> {
 
   @override
   factory HeartRateRecord.fromMap(Map<String, dynamic> map) {
+    final endHour = int.tryParse(map['endZoneOffset'] as String);
+    final startHour = int.tryParse(map['startZoneOffset'] as String);
+
     return HeartRateRecord(
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] == null
-          ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+      endZoneOffset: endHour != null ? Duration(hours: endHour) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       samples: (map['samples'] as List<dynamic>)
-          .map((e) => HeartRateSample.fromMap(e as Map<String, dynamic>))
+          .map((e) => HeartRateSample.fromMap(e))
           .toList(),
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] == null
-          ? null
-          : Duration(hours: map['startZoneOffset'] as int),
+      startZoneOffset: startHour != null ? Duration(hours: startHour) : null,
     );
   }
 
@@ -112,7 +111,7 @@ class HeartRateSample {
     };
   }
 
-  factory HeartRateSample.fromMap(Map<String, dynamic> map) {
+  factory HeartRateSample.fromMap(Map<dynamic, dynamic> map) {
     return HeartRateSample(
       beatsPerMinute: map['beatsPerMinute'] as int,
       time: DateTime.parse(map['time']),

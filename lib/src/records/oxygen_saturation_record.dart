@@ -44,14 +44,14 @@ class OxygenSaturationRecord extends InstantaneousRecord {
 
   @override
   factory OxygenSaturationRecord.fromMap(Map<String, dynamic> map) {
+    final hour = int.tryParse(map['zoneOffset'] as String);
+    final percentage = map['percentage'];
+
     return OxygenSaturationRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: hour != null ? Duration(hours: hour) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      percentage:
-          Percentage.fromMap(Map<String, dynamic>.from(map['percentage'])),
+      percentage: Percentage.fromMap(Map<String, dynamic>.from(percentage)),
     );
   }
 
