@@ -1,4 +1,5 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
+import 'package:flutter_health_connect/src/util.dart';
 
 import 'exercise_lap.dart';
 import 'exercise_route.dart';
@@ -116,13 +117,9 @@ class ExerciseSessionRecord extends IntervalRecord {
   factory ExerciseSessionRecord.fromMap(Map<String, dynamic> map) {
     return ExerciseSessionRecord(
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
+      startZoneOffset: parseOffset(map['startZoneOffset']),
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: parseOffset(map['endZoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       exerciseType: ExerciseType.fromValue(map['exerciseType']),
       title: map['title'],

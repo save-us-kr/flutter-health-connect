@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/records/series_record.dart';
+import 'package:flutter_health_connect/src/util.dart';
 
 class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
   @override
@@ -62,13 +63,9 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
   factory CyclingPedalingCadenceRecord.fromMap(Map<String, dynamic> map) {
     return CyclingPedalingCadenceRecord(
         startTime: DateTime.parse(map['startTime']),
-        startZoneOffset: map['startZoneOffset'] != null
-            ? Duration(hours: map['startZoneOffset'] as int)
-            : null,
+        startZoneOffset: parseOffset(map['startZoneOffset']),
         endTime: DateTime.parse(map['endTime']),
-        endZoneOffset: map['endZoneOffset'] != null
-            ? Duration(hours: map['endZoneOffset'] as int)
-            : null,
+        endZoneOffset: parseOffset(map['endZoneOffset']),
         samples:
             List<Sample>.from(map['samples']?.map((e) => Sample.fromMap(e))),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));

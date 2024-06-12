@@ -1,4 +1,5 @@
 import 'package:flutter_health_connect/src/records/series_record.dart';
+import 'package:flutter_health_connect/src/util.dart';
 
 import 'metadata/metadata.dart';
 
@@ -63,14 +64,10 @@ class StepsCadenceRecord extends SeriesRecord<StepsCadenceSample> {
   factory StepsCadenceRecord.fromMap(Map<String, dynamic> map) {
     return StepsCadenceRecord(
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] == null
-          ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+      endZoneOffset: parseOffset(map['endZoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] == null
-          ? null
-          : Duration(hours: map['startZoneOffset'] as int),
+      startZoneOffset: parseOffset(map['startZoneOffset']),
       samples: (map['samples'] as List)
           .map((e) => StepsCadenceSample.fromMap(e as Map<String, dynamic>))
           .toList(),

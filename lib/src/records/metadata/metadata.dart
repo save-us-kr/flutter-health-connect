@@ -72,11 +72,19 @@ class Metadata {
     };
   }
 
-  factory Metadata.fromMap(Map<String, dynamic> map) {
-    Map<String, dynamic> dataOriginMap =
-        Map<String, dynamic>.from(map['dataOrigin'] ?? {});
+  factory Metadata.fromMap(Map<dynamic, dynamic> map) {
+    /*{clientRecordId: null,
+     clientRecordVersion: 0,
+      dataOrigin: {packageName: com.sec.android.app.shealth},
+       device: null,
+        id: d5d784c1-a51b-4129-8a16-a47ad8e1cd73,
+         lastModifiedTime: 2024-06-11T23:36:13.512Z,
+          recordingMethod: 0}*/
+    Map<dynamic, dynamic> dataOriginMap =
+        Map<dynamic, dynamic>.from(map['dataOrigin'] ?? {});
     Map<String, dynamic> deviceMap =
         Map<String, dynamic>.from(map['device'] ?? {});
+
     return Metadata(
       id: map['id'] as String,
       dataOrigin: dataOriginMap.isNotEmpty
