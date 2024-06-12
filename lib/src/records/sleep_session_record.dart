@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_health_connect/src/records/interval_record.dart';
+import 'package:flutter_health_connect/src/util.dart';
 
 import 'metadata/metadata.dart';
 
@@ -31,8 +33,15 @@ class SleepSessionRecord extends IntervalRecord {
     if (stages.isNotEmpty) {
       List<SleepStage> sortedStages = stages
         ..sort((a, b) => a.startTime.compareTo(b.startTime));
+
       for (int i = 0; i < sortedStages.length - 1; i++) {
-        assert(sortedStages[i].endTime.isAfter(sortedStages[i + 1].startTime));
+        if (kDebugMode) {
+          print({
+            'startTime': sortedStages[i + 1].startTime,
+            'endTime': sortedStages[i].endTime
+          });
+        }
+        assert(sortedStages[i].endTime == sortedStages[i + 1].startTime);
       }
       assert(!sortedStages.first.startTime.isBefore(startTime));
       assert(!sortedStages.last.endTime.isAfter(endTime));
@@ -81,13 +90,9 @@ class SleepSessionRecord extends IntervalRecord {
   factory SleepSessionRecord.fromMap(Map<String, dynamic> map) {
     return SleepSessionRecord(
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
+      startZoneOffset: parseOffset(map['startZoneOffset']),
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: parseOffset(map['endZoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       title: map['title'] as String?,
       notes: map['notes'] as String?,
@@ -132,13 +137,13 @@ class SleepStage {
     };
   }
 
-  static SleepStage fromMap(Map<String, dynamic> map) {
+  static SleepStage fromMap(Map<dynamic, dynamic> map) {
     return SleepStage(
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
-      type: (map['type'] != null &&
-              map['type'] as int < SleepStageType.values.length)
-          ? SleepStageType.values[map['type'] as int]
+      startTime: DateTime.parse(map['startTime']),
+      endTime: DateTime.parse(map['endTime']),
+      type: (map['stage'] != null &&
+              map['stage'] as int < SleepStageType.values.length)
+          ? SleepStageType.values[map['stage'] as int]
           : SleepStageType.unknown,
     );
   }

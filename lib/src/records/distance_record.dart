@@ -1,6 +1,7 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/length.dart';
+import 'package:flutter_health_connect/src/util.dart';
 
 class DistanceRecord extends IntervalRecord {
   @override
@@ -67,13 +68,9 @@ class DistanceRecord extends IntervalRecord {
   factory DistanceRecord.fromMap(Map<String, dynamic> map) {
     return DistanceRecord(
         startTime: DateTime.parse(map['startTime']),
-        startZoneOffset: map['startZoneOffset'] != null
-            ? Duration(hours: map['startZoneOffset'] as int)
-            : null,
+        startZoneOffset: parseOffset(map['startZoneOffset']),
         endTime: DateTime.parse(map['endTime']),
-        endZoneOffset: map['endZoneOffset'] != null
-            ? Duration(hours: map['endZoneOffset'] as int)
-            : null,
+        endZoneOffset: parseOffset(map['endZoneOffset']),
         distance: Length.fromMap(Map<String, dynamic>.from(map['distance'])),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));
   }

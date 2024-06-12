@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
+import 'package:flutter_health_connect/src/util.dart';
 
 class WheelchairPushesRecord extends IntervalRecord {
   @override
@@ -65,13 +66,9 @@ class WheelchairPushesRecord extends IntervalRecord {
   factory WheelchairPushesRecord.fromMap(Map<String, dynamic> map) {
     return WheelchairPushesRecord(
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
+      startZoneOffset: parseOffset(map['startZoneOffset']),
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: parseOffset(map['endZoneOffset']),
       count: map['count'] as int,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
     );

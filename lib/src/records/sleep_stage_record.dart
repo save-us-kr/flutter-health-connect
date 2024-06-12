@@ -1,6 +1,7 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/records/sleep_session_record.dart';
+import 'package:flutter_health_connect/src/util.dart';
 
 class SleepStageRecord extends IntervalRecord {
   @override
@@ -60,16 +61,16 @@ class SleepStageRecord extends IntervalRecord {
 
   @override
   factory SleepStageRecord.fromMap(Map<String, dynamic> map) {
+    final endTime = DateTime.tryParse(map['endTime']) ?? DateTime.now();
+    final startTime = DateTime.tryParse(map['startTime']) ??
+        endTime.subtract(const Duration(days: 1));
+
     return SleepStageRecord(
-        endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
-        endZoneOffset: map['endZoneOffset'] != null
-            ? Duration(hours: map['endZoneOffset'])
-            : null,
+        endTime: endTime,
+        endZoneOffset: parseOffset(map['endZoneOffset']),
         metadata: Metadata.fromMap(map['metadata']),
-        startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
-        startZoneOffset: map['startZoneOffset'] != null
-            ? Duration(hours: map['startZoneOffset'])
-            : null,
+        startTime: startTime,
+        startZoneOffset: parseOffset(map['startZoneOffset']),
         stage: (map['stage'] != null &&
                 map['stage'] as int < SleepStageType.values.length)
             ? SleepStageType.values[map['stage']]
